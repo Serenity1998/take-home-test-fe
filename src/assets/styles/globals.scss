@@ -1,0 +1,20 @@
+
+@use "./components/button.scss";
+@use "./components/form.scss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import "./layout.css";
+@import "./tailwind.css";
+
+:root {
+  --background: #1a1a1a;
+  --foreground: #171717;
+}
+
+body {
+  margin: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', sans-serif;
+}
+

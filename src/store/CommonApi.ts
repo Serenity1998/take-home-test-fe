@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithoutAuth from '@/helpers/BaseQueryWithoutAuth';
 import { ApiResponse, TaskModel, TaskRequest } from '@/types/global';
-import { API } from '../config/api.constants';
+import { API } from '../config/Api.constants';
 
 export const commonApi = createApi({
   reducerPath: 'commonApi',

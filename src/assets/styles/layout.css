@@ -1,11 +1,11 @@
-.public-layout {
-  min-height: 100vh;
-  background-color: #1a1a1a;
-  color: #f2f2f2;
+.header_component {
+  @apply bg-dark px-5;
 }
 
-.heading {
-  margin: 0;
-  background-color: #1a1a1a;
-  color: #f2f2f2;
+.header_content-wrapper {
+  @apply h-[140px] lg:h-[200px] max-w-[736px] mx-auto;
+}
+
+.header_content-wrapper .btn {
+  @apply -mt-[24px] lg:-mt-[26px];
 }

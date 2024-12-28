@@ -1,0 +1,7 @@
+.btn {
+    @apply text-center text-white text-sm py-4 px-6 rounded-md flex justify-center items-center gap-2 w-full;
+}
+
+.primary {
+    @apply bg-primary;
+}

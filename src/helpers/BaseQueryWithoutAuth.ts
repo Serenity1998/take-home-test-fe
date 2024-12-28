@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { API_BASE_URL } from '../config/api.constants';
+import { API_BASE_URL } from '../config/Api.constants';
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: API_BASE_URL,
