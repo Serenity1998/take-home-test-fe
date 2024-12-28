@@ -30,6 +30,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: '#1E6F9F',
+        primary100: '#195b82',
         secondary: '#8284FA',
         dark: '#0D0D0D',
         gray: '#1A1A1A',

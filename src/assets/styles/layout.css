@@ -9,3 +9,7 @@
 .header_content-wrapper .btn {
   @apply -mt-[24px] lg:-mt-[26px];
 }
+
+.main_content {
+  @apply max-w-[736px] mx-auto mt-[91px];
+}

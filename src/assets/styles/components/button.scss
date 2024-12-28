@@ -3,5 +3,5 @@
 }
 
 .primary {
-    @apply bg-primary;
+    @apply bg-primary hover:bg-primary100 duration-300;
 }
