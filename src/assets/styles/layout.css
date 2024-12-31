@@ -11,5 +11,5 @@
 }
 
 .main_content {
-  @apply max-w-[736px] mx-auto mt-[91px] text-white;
+  @apply max-w-[736px] mx-auto mt-[91px] text-white pb-32;
 }

@@ -24,6 +24,7 @@ export default {
       md: '8px',
       lg: '12px',
       xl: '30px',
+      full: '100%',
     },
     extend: {
       colors: {
