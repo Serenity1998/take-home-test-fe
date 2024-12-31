@@ -7,7 +7,7 @@ export const commonApi = createApi({
   reducerPath: 'commonApi',
   baseQuery: baseQueryWithoutAuth,
   endpoints: (builder) => ({
-    getTaskList: builder.query<{ tasks: TaskModel[] }, void>({
+    getTaskList: builder.query<{ tasks: TaskRequest[] }, void>({
       query: () => ({
         url: `${API.getTasks}`,
       }),
@@ -19,7 +19,7 @@ export const commonApi = createApi({
         method: 'DELETE',
       }),
     }),
-    createTask: builder.mutation<ApiResponse, TaskRequest>({
+    createTask: builder.mutation<ApiResponse, TaskModel>({
       query: (body: any) => ({
         url: API.createTask,
         method: 'POST',
@@ -29,7 +29,7 @@ export const commonApi = createApi({
     updateTask: builder.query<ApiResponse, TaskRequest>({
       query: (body: any) => ({
         url: `${API.deleteTask}${body.id}`,
-        method: 'POST',
+        method: 'PUT',
         body,
       }),
       transformResponse: (response: any) => response.responseObject,

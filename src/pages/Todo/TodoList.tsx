@@ -1,15 +1,17 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { useLazyGetTaskListQuery } from "@/store/CommonApi"
-import { TaskModel } from "@/types/global"
+import { useLazyGetTaskListQuery, useLazyUpdateTaskQuery } from "@/store/CommonApi"
+import { TaskRequest } from "@/types/global"
 import Tag from "@/components/ui/Tag"
 import TodoListItem from "./TodoListItem"
 
 
 const TodoList = () => {
+    const [isLoading, setLoading] = useState<boolean>(false)
     const [getList, loading] = useLazyGetTaskListQuery()
-    const [list, setList] = useState<TaskModel[]>([])
+    const [updateTask] = useLazyUpdateTaskQuery()
+    const [list, setList] = useState<TaskRequest[]>([])
 
     useEffect(() => {
         fetchData()
@@ -18,6 +20,18 @@ const TodoList = () => {
     const fetchData = async () => {
         const result = await getList()
         setList(result.data?.tasks ?? [])
+    }
+
+    const onComplete = async (item: TaskRequest) => {
+        setLoading(true)
+        await updateTask({ ...item, completed: !item.completed }).then((response) => {
+            console.log(response)
+        }).catch(() => alert("Something is wrong with Task Update action"))
+        setLoading(false)
+    }
+
+    const onDelete = () => {
+
     }
 
     return <>
@@ -33,14 +47,17 @@ const TodoList = () => {
                 content={`${list.filter(i => i.completed).length == 0 ? 0 : `${list.filter(i => i.completed).length} of ${list.length}`}`}
             />
         </div>
-        {
-            list.map((i, inx) => <div key={`list_item-${inx}`}>
-                <TodoListItem
-                    model={i}
-                    onComplete={() => { console.log("complete") }}
-                    onDelete={() => { console.log("delete") }} />
-            </div>)
-        }
+        <div className="flex flex-col gap-3">
+            {
+                list.map((i, inx) => <div key={`list_item-${inx}`}>
+                    <TodoListItem
+                        model={i}
+                        onComplete={onComplete}
+                        onDelete={() => { console.log("delete") }}
+                        loading={isLoading} />
+                </div>)
+            }
+        </div>
     </>
 }
 

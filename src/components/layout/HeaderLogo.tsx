@@ -4,14 +4,12 @@ import Image from "next/image";
 import logo from "@/assets/images/logo.svg";
 import addIcon from "@/assets/icons/add.svg"
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from "next/link";
 
 const HeaderLogo = () => {
   const router = useRouter()
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const id = searchParams?.get('id');
 
   return (
     <div className="header_component">

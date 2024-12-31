@@ -1,6 +1,7 @@
 
 @use "./components/button.scss";
 @use "./components/form.scss";
+@use "./components//text.scss";
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import "./layout.css";
@@ -17,4 +18,3 @@ body {
   background: var(--background);
   font-family: 'Inter', sans-serif;
 }
-

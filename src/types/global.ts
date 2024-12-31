@@ -1,3 +1,11 @@
+import { CSSProperties, ReactNode } from 'react';
+
+export interface CommonProps {
+  className?: string;
+  children?: ReactNode;
+  style?: CSSProperties;
+}
+
 export enum TaskColors {
   ADMIN = 'super-admin',
   PARTNER_ADMIN = 'partner-admin',
