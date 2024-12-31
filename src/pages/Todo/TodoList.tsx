@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { useLazyGetTaskListQuery, useLazyUpdateTaskQuery } from "@/store/CommonApi"
+import { useLazyDeleteTaskByIdQuery, useLazyGetTaskListQuery, useLazyUpdateTaskQuery } from "@/store/CommonApi"
 import { TaskRequest } from "@/types/global"
 import Tag from "@/components/ui/Tag"
 import TodoListItem from "./TodoListItem"
@@ -11,6 +11,7 @@ const TodoList = () => {
     const [isLoading, setLoading] = useState<boolean>(false)
     const [getList, loading] = useLazyGetTaskListQuery()
     const [updateTask] = useLazyUpdateTaskQuery()
+    const [deleteTask] = useLazyDeleteTaskByIdQuery()
     const [list, setList] = useState<TaskRequest[]>([])
 
     useEffect(() => {
@@ -30,8 +31,12 @@ const TodoList = () => {
         setLoading(false)
     }
 
-    const onDelete = () => {
-
+    const onDelete = async (id: string) => {
+        setLoading(true)
+        await deleteTask(id).then((response) => {
+            console.log(response)
+        }).catch(() => alert("Something is wrong with Task Update action"))
+        setLoading(false)
     }
 
     return <>
@@ -53,7 +58,7 @@ const TodoList = () => {
                     <TodoListItem
                         model={i}
                         onComplete={onComplete}
-                        onDelete={() => { console.log("delete") }}
+                        onDelete={onDelete}
                         loading={isLoading} />
                 </div>)
             }

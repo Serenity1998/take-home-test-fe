@@ -37,4 +37,4 @@ export const commonApi = createApi({
   }),
 });
 
-export const { useCreateTaskMutation, useDeleteTaskByIdQuery, useLazyGetTaskListQuery, useLazyUpdateTaskQuery } = commonApi;
+export const { useCreateTaskMutation, useLazyDeleteTaskByIdQuery, useLazyGetTaskListQuery, useLazyUpdateTaskQuery } = commonApi;
