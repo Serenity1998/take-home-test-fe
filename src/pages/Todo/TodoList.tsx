@@ -4,12 +4,14 @@ import { useEffect, useState } from "react"
 import { useLazyDeleteTaskByIdQuery, useLazyGetTaskListQuery, useLazyUpdateTaskQuery } from "@/store/CommonApi"
 import { TaskRequest } from "@/types/global"
 import Tag from "@/components/ui/Tag"
-import TodoListItem from "./TodoListItem"
+import { FormListLoader, NotFound, TodoListItem, } from "@/pages/Todo"
 
 
 const TodoList = () => {
-    const [isLoading, setLoading] = useState<boolean>(false)
-    const [getList, loading] = useLazyGetTaskListQuery()
+    const [isActionLoading, setActionLoading] = useState<boolean>(false)
+    const [isLoading, setLoading] = useState(true)
+    const [selected, setSelected] = useState<string>('')
+    const [getList] = useLazyGetTaskListQuery()
     const [updateTask] = useLazyUpdateTaskQuery()
     const [deleteTask] = useLazyDeleteTaskByIdQuery()
     const [list, setList] = useState<TaskRequest[]>([])
@@ -21,22 +23,26 @@ const TodoList = () => {
     const fetchData = async () => {
         const result = await getList()
         setList(result.data?.tasks ?? [])
+        setTimeout(() =>
+            setLoading(false), 200)
     }
 
     const onComplete = async (item: TaskRequest) => {
-        setLoading(true)
+        setActionLoading(true)
+        setSelected(item.id)
         await updateTask({ ...item, completed: !item.completed }).then((response) => {
             console.log(response)
         }).catch(() => alert("Something is wrong with Task Update action"))
-        setLoading(false)
+        setActionLoading(false)
     }
 
     const onDelete = async (id: string) => {
-        setLoading(true)
+        setActionLoading(true)
+        setSelected(id)
         await deleteTask(id).then((response) => {
             console.log(response)
         }).catch(() => alert("Something is wrong with Task Update action"))
-        setLoading(false)
+        setActionLoading(false)
     }
 
     return <>
@@ -54,12 +60,13 @@ const TodoList = () => {
         </div>
         <div className="flex flex-col gap-3">
             {
-                list.map((i, inx) => <div key={`list_item-${inx}`}>
+                isLoading ? <FormListLoader /> : list.length == 0 ? <NotFound /> : list.map((i, inx) => <div key={`list_item-${inx}`}>
                     <TodoListItem
                         model={i}
                         onComplete={onComplete}
                         onDelete={onDelete}
-                        loading={isLoading} />
+                        loading={isActionLoading}
+                        selected={selected} />
                 </div>)
             }
         </div>

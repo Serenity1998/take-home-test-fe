@@ -12,6 +12,7 @@ interface TodoListItemProps {
     loading: boolean;
     onComplete: (item: TaskRequest) => void;
     onDelete: (id: string) => void;
+    selected: string
 }
 
 const TodoListItem = (props: TodoListItemProps) => {
@@ -22,7 +23,7 @@ const TodoListItem = (props: TodoListItemProps) => {
     const inActiveBtn = <Image src={completed_circle} width={18} height={18} alt="" />
 
     return <div className={`p-4 rounded-md flex items-center gap-3 ${props.model.completed ? inActiveClassname : activeClassname}`}>
-        <Button onClick={() => props.onComplete(props.model)} loading={props.loading}>
+        <Button onClick={() => props.onComplete(props.model)} loading={props.loading ? props.model.id == props.selected : false}>
             {props.model.completed ? inActiveBtn : activeBtn}
         </Button>
         <Link href={`/detail?id=${props.model.id}`} className="flex-1 text-md text-stroke p-0 hover:opacity-90">

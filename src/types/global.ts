@@ -26,7 +26,7 @@ export type TaskModel = {
 };
 
 export type TaskRequest = {
-  id?: string;
+  id: string;
   title: string;
   color: string;
   completed: boolean;
