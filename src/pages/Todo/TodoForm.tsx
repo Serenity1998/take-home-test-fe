@@ -1,36 +1,75 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Link from "next/link"
 import Image from "next/image"
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import Button from "@/components/ui/Button"
 import { COLORS } from "@/config/Api.constants"
-import { useCreateTaskMutation } from "@/store/CommonApi"
+import { useCreateTaskMutation, useLazyUpdateTaskQuery, useLazyGetTaskQuery } from "@/store/CommonApi"
 import delete_icon from "@/assets/icons/back_arrow.svg"
 import addIcon from "@/assets/icons/add.svg"
+import { TaskRequest } from "@/types/global"
 
 const TodoForm = () => {
     const router = useRouter()
-    const [createTask, { isLoading }] = useCreateTaskMutation()
+    const searchParams = useSearchParams();
+    const id = searchParams?.get("id");
+
+    const [createTask, { isLoading: isCreating }] = useCreateTaskMutation()
+    const [updateTask, { isLoading: isUpdating }] = useLazyUpdateTaskQuery()
+    const [getTask] = useLazyGetTaskQuery()
     const [colorInx, setColorInx] = useState(0)
     const [title, setTitle] = useState<string>('')
+    const [isComplete, setIsComplete] = useState<boolean>(false)
     const [errorTxt, setErrorTxt] = useState<string>()
 
-    const onCreate = async () => {
+    useEffect(() => {
+        if (id) fetchData(id)
+    }, [])
+
+    const fetchData = async (id: string) => {
+        await getTask(id)
+            .then(result => {
+                const data = result.data?.tasks
+                const colorInx = COLORS.findIndex((i) => i.color == data?.color)
+                setTitle(data?.title || "")
+                setColorInx(colorInx)
+                setIsComplete(data?.completed || false)
+            })
+            .catch(err => setErrorTxt(err))
+    }
+
+    const onCreateAndEdit = async () => {
         const color = COLORS.find((i, inx) => inx == colorInx)?.color
         if (title.trim() === '') return setErrorTxt("Title can't be empty")
 
-        await createTask({
+        let task = {
             title: title,
             color: color || COLORS[0].color,
-            completed: false
-        }).then((result) => {
-            if (result.data?.success) router.back()
-            else setErrorTxt(result.data?.message)
-        }).catch((_) => setErrorTxt("Unable to connect to the server."))
+            completed: isComplete
+        }
+        if (id) {
+            await updateTask({ ...task, id })
+                .then((result) => {
+                    console.log("Updated:", result)
+                    if (result.data?.success) return router.back()
+                    else setErrorTxt("Somethings wrong try again");
+                })
+                .catch((_) => setErrorTxt("Unable to connect to the server."))
+        }
+
+        else {
+            await createTask(task)
+                .then((result) => {
+                    console.log("Created:", result)
+                    if (result.data?.success) return router.back()
+                    else setErrorTxt(result.data?.message)
+                })
+                .catch((_) => setErrorTxt("Unable to connect to the server."))
+        }
     }
 
     return <div className="flex flex-col justify-start gap-12">
@@ -50,7 +89,7 @@ const TodoForm = () => {
             </div>
             {errorTxt && <p className="text-error mt-4">{errorTxt}</p>}
         </div>
-        <Button className="btn primary flex items-center gap-2" onClick={onCreate} loading={isLoading}>
+        <Button className="btn primary flex items-center gap-2" onClick={onCreateAndEdit} loading={isCreating || isUpdating}>
             <p className="mr-2">Add Task</p> <Image src={addIcon} width={16} height={16} alt="add" />
         </Button>
     </div>

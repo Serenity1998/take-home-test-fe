@@ -13,6 +13,12 @@ export const commonApi = createApi({
       }),
       transformResponse: (response: any) => response.responseObject,
     }),
+    getTask: builder.query<{ tasks: TaskRequest }, string>({
+      query: (id) => ({
+        url: `${API.getTasks}/${id}`,
+      }),
+      transformResponse: (response: any) => response.responseObject,
+    }),
     deleteTaskById: builder.query<ApiResponse, string>({
       query: (id) => ({
         url: `${API.deleteTask}${id}`,
@@ -28,13 +34,18 @@ export const commonApi = createApi({
     }),
     updateTask: builder.query<ApiResponse, TaskRequest>({
       query: (body: any) => ({
-        url: `${API.deleteTask}${body.id}`,
+        url: `${API.updateTask}${body.id}`,
         method: 'PUT',
         body,
       }),
-      transformResponse: (response: any) => response.responseObject,
     }),
   }),
 });
 
-export const { useCreateTaskMutation, useLazyDeleteTaskByIdQuery, useLazyGetTaskListQuery, useLazyUpdateTaskQuery } = commonApi;
+export const {
+  useCreateTaskMutation,
+  useLazyDeleteTaskByIdQuery,
+  useLazyGetTaskListQuery,
+  useLazyUpdateTaskQuery,
+  useLazyGetTaskQuery,
+} = commonApi;

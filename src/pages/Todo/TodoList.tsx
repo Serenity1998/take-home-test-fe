@@ -30,18 +30,18 @@ const TodoList = () => {
     const onComplete = async (item: TaskRequest) => {
         setActionLoading(true)
         setSelected(item.id)
-        await updateTask({ ...item, completed: !item.completed }).then((response) => {
-            console.log(response)
-        }).catch(() => alert("Something is wrong with Task Update action"))
+        await updateTask({ ...item, completed: !item.completed })
+            .then(() => fetchData())
+            .catch(() => alert("Something is wrong with Task Update action"))
         setActionLoading(false)
     }
 
-    const onDelete = async (id: string) => {
+    const onDelete = async (item: TaskRequest) => {
         setActionLoading(true)
-        setSelected(id)
-        await deleteTask(id).then((response) => {
-            console.log(response)
-        }).catch(() => alert("Something is wrong with Task Update action"))
+        setSelected(item.id)
+        await deleteTask(item.id)
+            .then(() => fetchData())
+            .catch(() => alert("Something is wrong with Task Update action"))
         setActionLoading(false)
     }
 

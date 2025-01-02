@@ -11,7 +11,7 @@ interface TodoListItemProps {
     model: TaskRequest;
     loading: boolean;
     onComplete: (item: TaskRequest) => void;
-    onDelete: (id: string) => void;
+    onDelete: (item: TaskRequest) => void;
     selected: string
 }
 
@@ -30,7 +30,7 @@ const TodoListItem = (props: TodoListItemProps) => {
             <h6 className={props.model.completed ? 'text-strike text-gray100' : ''}>{props.model.title}</h6>
         </Link>
         {
-            props.model.id && <Button onClick={() => props.onDelete(props.model.id!)} className="p-2 text-gray100" loading={props.loading}>
+            props.model.id && <Button onClick={() => props.onDelete(props.model)} className="p-2 text-gray100" loading={props.loading ? props.model.id == props.selected : false}>
                 <Image src={delete_icon} width={14} height={18} alt="" />
             </Button>
         }
